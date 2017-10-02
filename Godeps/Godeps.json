@@ -1,0 +1,17 @@
+{
+	"ImportPath": "github.com/serverwentdown/short",
+	"GoVersion": "go1.9",
+	"GodepVersion": "v79",
+	"Deps": [
+		{
+			"ImportPath": "github.com/lib/pq",
+			"Comment": "go1.0-cutoff-181-gb77235e",
+			"Rev": "b77235e3890a962fe8a6f8c4c7198679ca7814e7"
+		},
+		{
+			"ImportPath": "github.com/lib/pq/oid",
+			"Comment": "go1.0-cutoff-181-gb77235e",
+			"Rev": "b77235e3890a962fe8a6f8c4c7198679ca7814e7"
+		}
+	]
+}
