@@ -39,6 +39,7 @@ func main() {
 	http.HandleFunc("/", handlers.Get)
 
 	// Listen
+	log.Println("Listening on port " + listenPort)
 	log.Fatal(http.ListenAndServe(":" + listenPort, nil))
 }
 
