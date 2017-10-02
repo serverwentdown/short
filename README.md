@@ -1,7 +1,7 @@
 
 # short
 
-A tiny, one-dependency URL shortener service. 
+A tiny, one-dependency, unauthenticated URL shortener service. 
 
 # Getting started
 
