@@ -19,3 +19,8 @@ go build
 export POSTGRES=postgresql://root@localhost:26257/short?sslmode=disable
 ./short
 ```
+
+# ENV
+
+BASEURL: Base URL used in returning the short address.
+PORT: Port to listen on
