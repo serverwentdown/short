@@ -23,4 +23,7 @@ export POSTGRES=postgresql://root@localhost:26257/short?sslmode=disable
 # ENV
 
 BASEURL: Base URL used in returning the short address.
+
 PORT: Port to listen on
+
+POSTGRES: [Postgres string](https://godoc.org/github.com/lib/pq#hdr-Connection_String_Parameters)
