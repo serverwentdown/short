@@ -74,8 +74,10 @@ input[type=submit]:active, input[type=button]:active {
 			method: e.target.method,
 			body: new FormData(e.target),
 		}).then(res => {
-			if (!res.ok) throw Error(res.statusText)
-			return res.text()
+			return { text: res.text(), res: res }
+		}).then(o => {
+			if (!o.res.ok) throw Error(o.text)
+			return o.text
 		}).then(short => {
 			console.log(short)
 			document.querySelector("[name=url]").value = "";
