@@ -33,13 +33,11 @@ func main() {
 	store := NewStore(db)
 	// Setup handlers
 	handlers := NewHandlers(store, baseUrl)
-	
-	// Bind handlers to paths
-	http.HandleFunc("/new", handlers.Create)
-	http.HandleFunc("/", handlers.Get)
+	// Create router
+	router := NewRouter(handlers)
 
 	// Listen
 	log.Println("Listening on port " + listenPort)
-	log.Fatal(http.ListenAndServe(":" + listenPort, nil))
+	log.Fatal(http.ListenAndServe(":" + listenPort, router))
 }
 

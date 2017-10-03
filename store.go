@@ -16,7 +16,7 @@ func (s *Store) Create(url string) (id string, err error) {
 		SELECT url FROM links WHERE id = $1
 	`, id).Scan(&existing)
 	if err == nil {
-		log.Print("Collision occurred, regenerating...")
+		log.Print("Collision occurred on " + id + ", regenerating...")
 		return s.Create(url)
 	}
 	if err != nil && err != sql.ErrNoRows {
