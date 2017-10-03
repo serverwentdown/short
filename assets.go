@@ -74,7 +74,9 @@ input[type=submit]:active, input[type=button]:active {
 			method: e.target.method,
 			body: new FormData(e.target),
 		}).then(res => {
-			return { text: res.text(), res: res }
+			return res.text().then(text => {
+				return { text, res }
+			})
 		}).then(o => {
 			if (!o.res.ok) throw Error(o.text)
 			return o.text
