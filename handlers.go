@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	
+
 	"github.com/julienschmidt/httprouter"
 )
 
 type Handlers struct {
-	store *Store
+	store   *Store
 	baseUrl string
 }
 
@@ -30,9 +30,9 @@ func (h *Handlers) Create(w http.ResponseWriter, r *http.Request, _ httprouter.P
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
-	
+
 	// Print shortened URL
-	fmt.Fprintln(w, h.baseUrl + "/" + id)
+	fmt.Fprintln(w, h.baseUrl+"/"+id)
 }
 
 func (h *Handlers) Get(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
@@ -55,7 +55,7 @@ func (h *Handlers) Index(w http.ResponseWriter, r *http.Request, _ httprouter.Pa
 
 func NewHandlers(store *Store, baseUrl string) *Handlers {
 	return &Handlers{
-		store: store,
+		store:   store,
 		baseUrl: baseUrl,
 	}
 }

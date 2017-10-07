@@ -1,15 +1,15 @@
 package main
 
 import (
-	"time"
 	"math/rand"
+	"time"
 )
 
 var chars = []byte{
 	'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i',
 	'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
 	's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-	'1', '2', '3', '4',	'5', '6', '7', '8', '9', '0',
+	'1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
 }
 
 // Increase below in the future
@@ -17,7 +17,7 @@ var length = 4
 var seeded = false
 
 func GenerateID() string {
-	if (!seeded) {
+	if !seeded {
 		rand.Seed(time.Now().UnixNano())
 	}
 	id := make([]byte, length)

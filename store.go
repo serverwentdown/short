@@ -1,8 +1,8 @@
 package main
 
 import (
-	"log"
 	"database/sql"
+	"log"
 )
 
 type Store struct {

@@ -1,10 +1,10 @@
 package main
 
 import (
-	"os"
+	"database/sql"
 	"log"
 	"net/http"
-	"database/sql"
+	"os"
 
 	_ "github.com/lib/pq"
 )
@@ -28,7 +28,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	
+
 	// Create storage abstraction
 	store := NewStore(db)
 	// Setup handlers
@@ -38,6 +38,5 @@ func main() {
 
 	// Listen
 	log.Println("Listening on port " + listenPort)
-	log.Fatal(http.ListenAndServe(":" + listenPort, router))
+	log.Fatal(http.ListenAndServe(":"+listenPort, router))
 }
-
