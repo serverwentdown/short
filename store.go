@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"errors"
 	"log"
 )
 
@@ -11,14 +12,19 @@ type Store struct {
 }
 
 func (s *Store) Create(url string) (id string, err error) {
-	id = GenerateID(s.num)
-	var existing string
-	err = s.db.QueryRow(`
-		SELECT url FROM links WHERE id = $1
-	`, id).Scan(&existing)
-	if err == nil {
-		log.Print("store: collision occurred on " + id + ", regenerating...")
-		return s.Create(url)
+	for i := 0; i < 5; i++ {
+		id = GenerateID(s.num)
+		var existing string
+		err = s.db.QueryRow(`
+			SELECT url FROM links WHERE id = $1
+		`, id).Scan(&existing)
+		if err != nil {
+			break
+		}
+		if i == 4 {
+			return "", errors.New("unable to generate short URL, hit 5 collisions")
+		}
+		log.Print("store: collision occurred on " + id + ", regenerating")
 	}
 	if err != nil && err != sql.ErrNoRows {
 		return "", err
