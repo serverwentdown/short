@@ -6,17 +6,18 @@ import (
 )
 
 type Store struct {
-	db *sql.DB
+	db  *sql.DB
+	num int
 }
 
 func (s *Store) Create(url string) (id string, err error) {
-	id = GenerateID()
+	id = GenerateID(s.num)
 	var existing string
 	err = s.db.QueryRow(`
 		SELECT url FROM links WHERE id = $1
 	`, id).Scan(&existing)
 	if err == nil {
-		log.Print("Collision occurred on " + id + ", regenerating...")
+		log.Print("store: collision occurred on " + id + ", regenerating...")
 		return s.Create(url)
 	}
 	if err != nil && err != sql.ErrNoRows {
@@ -40,7 +41,7 @@ func (s *Store) Get(id string) (url string, err error) {
 	return url, err
 }
 
-func NewStore(db *sql.DB) *Store {
+func NewStore(db *sql.DB, num int) *Store {
 	// Check for table and initialise if necessary
 	_, err := db.Exec(`
 		CREATE TABLE IF NOT EXISTS links (
@@ -52,7 +53,5 @@ func NewStore(db *sql.DB) *Store {
 		log.Fatal(err)
 	}
 
-	return &Store{
-		db: db,
-	}
+	return &Store{db, num}
 }

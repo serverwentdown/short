@@ -13,15 +13,14 @@ var chars = []byte{
 }
 
 // Increase below in the future
-var length = 4
 var seeded = false
 
-func GenerateID() string {
+func GenerateID(n int) string {
 	if !seeded {
 		rand.Seed(time.Now().UnixNano())
 	}
-	id := make([]byte, length)
-	for i := 0; i < length; i++ {
+	id := make([]byte, n)
+	for i := 0; i < n; i++ {
 		id[i] = chars[rand.Intn(len(chars))]
 	}
 	return string(id)

@@ -1,7 +1,9 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
+	"log"
 	"net/http"
 	"net/url"
 
@@ -18,8 +20,9 @@ func (h *Handlers) Create(w http.ResponseWriter, r *http.Request, _ httprouter.P
 	u := r.FormValue("url")
 
 	// Check that it is a URL
-	_, err := url.ParseRequestURI(u)
-	if err != nil {
+	parsed, err := url.Parse(u)
+	if err != nil || parsed.Host == "" || (parsed.Scheme != "http" && parsed.Scheme != "https") {
+		log.Print("handlers: invalid url: " + u)
 		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return
 	}
@@ -27,6 +30,7 @@ func (h *Handlers) Create(w http.ResponseWriter, r *http.Request, _ httprouter.P
 	// Create a short URL
 	id, err := h.store.Create(u)
 	if err != nil {
+		log.Print("handlers: " + err.Error())
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
@@ -39,6 +43,9 @@ func (h *Handlers) Get(w http.ResponseWriter, r *http.Request, p httprouter.Para
 	// Get the short URL
 	url, err := h.store.Get(p.ByName("id"))
 	if err != nil {
+		if err != sql.ErrNoRows {
+			log.Print("handlers: " + err.Error())
+		}
 		http.Error(w, "Not found, or an error occurred, idk.", http.StatusNotFound)
 		return
 	}
