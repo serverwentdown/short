@@ -16,8 +16,7 @@ Build and run short:
 
 ```
 go build
-export POSTGRES=postgresql://root@localhost:26257/short?sslmode=disable
-./short
+./short -postgres postgresql://root@localhost:26257/short?sslmode=disable
 ```
 
 # Usage
