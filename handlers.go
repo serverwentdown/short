@@ -43,6 +43,12 @@ func (h *Handlers) Get(w http.ResponseWriter, r *http.Request, p httprouter.Para
 	// Get the short URL
 	url, err := h.store.Get(p.ByName("id"))
 	if err != nil {
+        // Respond to health checks
+        if p.ByName("id") == "healthz" {
+            w.Header().Set("Content-Type", "text/plain")
+            w.Write([]byte("ok"))
+            return
+        }
 		if err != sql.ErrNoRows {
 			log.Print("handlers: " + err.Error())
 		}

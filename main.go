@@ -14,12 +14,14 @@ var num int
 var port int
 var baseUrl string
 var postgres string
+var healthCheck bool
 
 func init() {
 	flag.IntVar(&num, "num", 4, "number of characters in shortened url")
 	flag.IntVar(&port, "port", 8080, "listen on port")
 	flag.StringVar(&baseUrl, "baseurl", "localhost:port", "baseurl URL of short links")
 	flag.StringVar(&postgres, "postgres", "postgresql://root@localhost:26257/short?sslmode=disable", "postgres string")
+	flag.BoolVar(&healthCheck, "healthcheck", false, "perform health check on running instance")
 }
 
 func main() {
@@ -28,6 +30,15 @@ func main() {
 	if baseUrl == "localhost:port" {
 		baseUrl = fmt.Sprintf("localhost:%d", port)
 	}
+
+    // Perform health check on running instance
+    if healthCheck {
+        err := ping()
+        if err != nil {
+            panic(err)
+        }
+        return
+    }
 
 	// Open database connection
 	db, err := sql.Open("postgres", postgres)
@@ -45,4 +56,16 @@ func main() {
 	// Listen
 	log.Println("main: Listening on port", port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", port), router))
+}
+
+func ping() error {
+    resp, err := http.Get(fmt.Sprintf("http://localhost:%d/healthz", port))
+    if err != nil {
+        return err
+    }
+    defer resp.Body.Close()
+    if resp.StatusCode != 200 {
+        return fmt.Errorf("agent returned non-200 status code")
+    }
+    return nil
 }

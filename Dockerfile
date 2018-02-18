@@ -13,4 +13,6 @@ FROM scratch
 EXPOSE 8080
 COPY --from=go /go/src/short/short /short
 
+HEALTHCHECK CMD ["/short", "-healthcheck"]
+
 ENTRYPOINT ["/short"]
