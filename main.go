@@ -33,7 +33,7 @@ func main() {
 
 	// Perform health check on running instance
 	if healthCheck {
-		err := ping()
+		err := ping(fmt.Sprintf("http://localhost:%d/healthz", port))
 		if err != nil {
 			panic(err)
 		}
@@ -56,16 +56,4 @@ func main() {
 	// Listen
 	log.Println("main: Listening on port", port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", port), router))
-}
-
-func ping() error {
-	resp, err := http.Get(fmt.Sprintf("http://localhost:%d/healthz", port))
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != 200 {
-		return fmt.Errorf("agent returned non-200 status code")
-	}
-	return nil
 }
