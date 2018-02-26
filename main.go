@@ -31,14 +31,14 @@ func main() {
 		baseUrl = fmt.Sprintf("localhost:%d", port)
 	}
 
-    // Perform health check on running instance
-    if healthCheck {
-        err := ping()
-        if err != nil {
-            panic(err)
-        }
-        return
-    }
+	// Perform health check on running instance
+	if healthCheck {
+		err := ping()
+		if err != nil {
+			panic(err)
+		}
+		return
+	}
 
 	// Open database connection
 	db, err := sql.Open("postgres", postgres)
@@ -59,13 +59,13 @@ func main() {
 }
 
 func ping() error {
-    resp, err := http.Get(fmt.Sprintf("http://localhost:%d/healthz", port))
-    if err != nil {
-        return err
-    }
-    defer resp.Body.Close()
-    if resp.StatusCode != 200 {
-        return fmt.Errorf("agent returned non-200 status code")
-    }
-    return nil
+	resp, err := http.Get(fmt.Sprintf("http://localhost:%d/healthz", port))
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != 200 {
+		return fmt.Errorf("agent returned non-200 status code")
+	}
+	return nil
 }
