@@ -1,4 +1,4 @@
-FROM golang:1.10-alpine as go
+FROM golang:1.11-alpine as go
 
 WORKDIR /go/src/github.com/serverwentdown/short
 COPY . .
